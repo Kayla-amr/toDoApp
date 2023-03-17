@@ -1,0 +1,78 @@
+<!--Creating a container to display app-->
+<div id="app">
+    <h1>{{appTitle}}</h1>
+    <input v-model="newTask.name" type="text">
+    <button @click="addTask">+</button>
+    <!--inserting tasks to display-->
+    <table>
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="task in tasks" :key="task.id">
+                <td :class="{ completed: task.status, incomplete: !task.status }">{{task.name}}</td>
+                <td><input type="checkbox" v-model="task.status"></td>
+                <td><button @click="deleteTask(task.id)">-</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="module">
+    import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+    createApp({
+        data() {
+            return {
+                appTitle: "Kayla's ToDo App",
+                tasks: [
+                    { id: 1, name: 'My journey with Vue', status: true },
+                    { id: 2, name: 'Blogging with Vue', status: false },
+                    { id: 3, name: 'Why Vue is so fun', status: true }
+                ],
+
+                newTask: {
+                    id: 0,
+                    name: '',
+                    status: false
+                },
+            }
+        },
+        methods: {
+            addTask() {
+                if (!this.newTask.name) return;
+                this.tasks.push({
+                    id: this.tasks.length + 1,
+                    name: this.newTask.name,
+                    status: false
+                });
+                this.newTask.name = '';
+
+            },
+            deleteTask(id) {
+                const index = this.tasks.findIndex(task => task.id === id);
+                this.tasks.splice(index, 1);
+            },
+
+        }
+    }).mount('#app')
+</script>
+
+<style>
+    th,
+    td {
+        padding-right: 20px;
+    }
+
+    .completed {
+        text-decoration: line-through;
+    }
+
+    .incomplete {
+        text-decoration: none;
+    }
+</style>
