@@ -14,7 +14,9 @@
         </thead>
         <tbody>
             <tr v-for="task in tasks" :key="task.id">
-                <td :class="{ completed: task.status, incomplete: !task.status }">{{task.name}}</td>
+                <td :class="{ completed: task.status, incomplete: !task.status }">
+                    <input class="taskName" type="text" v-model="task.name">
+                </td>
                 <td><input type="checkbox" v-model="task.status"></td>
                 <td><button @click="deleteTask(task.id)">-</button></td>
             </tr>
@@ -66,6 +68,11 @@
     th,
     td {
         padding-right: 20px;
+    }
+    
+    .taskName {
+        border: none;
+        background-color: transparent;
     }
 
     .completed {
